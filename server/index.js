@@ -1,28 +1,51 @@
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-const PORT = 5000; // 後端伺服器使用的 port
-
-app.use(cors()); // 允許前端跨來源請求
-app.use(express.json()); // 讓伺服器可以解析 JSON 請求
-
-// 建立 /register POST API
-app.post('/register', (req, res) => {
-  const { name, email } = req.body;
-
-  console.log('收到報名資料：', name, email);
-
-  // 模擬資料處理（你未來可以接資料庫）
-  if (!name || !email) {
-    return res.status(400).json({ message: '缺少姓名或信箱' });
+const mysql2= require('mysql2');
+const db = mysql2.createConnection({
+  host: 'localhost',
+  user:'root',
+  password:'kent4620',
+  database:'event_register',
+  port: 3306 // MySQL 預設端口是 3306
+});
+  db.connect((err) => {
+  if (err) {
+    console.error('無法連接到資料庫:', err);
+  } else {
+    console.log('成功連接到資料庫');
   }
-
-  // 回傳成功訊息
-  res.status(200).json({ message: '報名成功！' });
+});
+db.query('SELECT NOW() AS currentTime', (err, results) => {
+  if (err) {
+    return console.error('查詢錯誤:', err);
+  }
+  console.log('目前時間:', results[0].currentTime);
 });
 
-// 啟動伺服器
+const express = require('express');
+const cors = require("cors");
+const app = express();
+const PORT = 5050; // 換成 5050
+
+app.use(cors());
+app.use(express.json());
+
+app.post('/register', (req, res) => {
+  const { name, email, number, paycode } = req.body;
+  if (!name || !email || !number || !paycode) {
+    return res.status(400).json({ message: '缺少詳細資料' });
+  }
+
+  const sql = 'INSERT INTO Users (name, email, number, paycode) VALUES (?, ?, ?, ?)';
+  db.query(sql, [name, email,number,paycode], (err, results) => {
+    if (err) {
+      console.error('資料庫錯誤:', err);
+      return res.status(500).json({ message: '伺服器錯誤' });
+    }
+    console.log('新增資料成功:', results);
+    res.status(201).json({ message: '報名成功！' });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`伺服器啟動：http://localhost:${PORT}`);
 });
+
