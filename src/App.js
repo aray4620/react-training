@@ -30,7 +30,7 @@ function App() {
       setError("Email格式不正確!");
       return;
     }
-    if (!/^0\d{9}/.test(number.trim())) {
+    if (!/^0\d{9}$/.test(number.trim())) {
       setError("請輸入完整號碼!");
       return;
     }
@@ -75,8 +75,8 @@ function App() {
     <div
       className="App"
       style={{
-        maxWidth: "500px",
-        margin: "30px auto",
+        maxWidth: "auto",
+        margin: "auto",
         fontFamily: "arial, sans-serif",
       }}
     >
@@ -86,7 +86,7 @@ function App() {
         <div>
           <h2 style={{ textAlign: "center" }}>活動報名系統 </h2>
           {error && <p style={{ color: "red" }}>{error}</p>}
-
+          {success && <p style={{ color: "green" }}>{success}</p>}
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="column">
