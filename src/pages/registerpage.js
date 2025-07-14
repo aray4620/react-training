@@ -10,6 +10,7 @@ function RegisterPage() {
   const [paycode, setPaycode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -136,7 +137,7 @@ function RegisterPage() {
 
           <button type="submit">送出報名</button>
           <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate(-1)}
         style={{marginTop: 20 }}>
         返回
       </button>
