@@ -2,36 +2,24 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 function EventDetail() {
-  const { category, id } = useParams();
-  // id 就是活動名稱
-
-  const activityDescriptions = {
-    "頂上對決": "這是一場最強Locking高手之戰，舞技與節奏的巔峰對決。",
-    "FunkSession": "Funk音樂環繞全場，邀你一起盡情Popping！",
-    "P組測試1": "這是Popping組的第一場測試賽。",
-    "P組測試2": "這是Popping組的第二場測試賽。",
-    "H組測試1": "這是Hiphop組的第一場測試賽。",
-    "H組測試2": "這是Hiphop組的第二場測試賽。",
-  };
-
-  const navigate = useNavigate();
+  const { category, activity } = useParams();  // 從網址中抓組別與活動名稱
+  const navigate = useNavigate();              // 用來跳轉頁面
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>{id} 活動介紹</h2>
-      <p>{activityDescriptions[id] || "沒有找到這場活動的介紹。"}</p>
+      <h2>{decodeURIComponent(activity)} 活動介紹頁面</h2>
+      <p>組別：{category}</p>
+      <p>這裡可以顯示活動的詳細資訊，例如比賽地點、時間、評審等等（之後再補）。</p>
+
       <button
-        style={{
-          marginTop: 20,
-          padding: "10px 20px",
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: 5,
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/")}
+        onClick={() => navigate(`/register/${category}/${encodeURIComponent(activity)}`)}
+        style={{ marginTop: 20 }}
       >
+        我要報名
+      </button>
+      <button
+        onClick={() => navigate("/")}
+        style={{marginTop: 20 }}>
         返回首頁
       </button>
     </div>
