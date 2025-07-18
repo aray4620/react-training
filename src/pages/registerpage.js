@@ -10,6 +10,7 @@ function RegisterPage() {
   const [paycode, setPaycode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("LinePay"); // 預設linepay
   
 
   const handleSubmit = async (event) => {
@@ -46,7 +47,7 @@ function RegisterPage() {
       const response = await fetch("http://localhost:5050/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, number: trimmedNumber, paycode }),
+        body: JSON.stringify({ name, email, number: trimmedNumber, paycode, paymentMethod }),
       });
 
       const text = await response.text();
@@ -124,6 +125,17 @@ function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+            <div className="row">
+            <div className="column">
+            <label>付款方式：</label>
+            <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+              <option value="linepay">Line Pay</option>
+              <option value="creditcard">信用卡</option>
+              <option value="atm">ATM 轉帳</option>
+            </select>
+            </div>
+            </div>
+
             <div className="column">
               <label>匯款後五碼：</label>
               <input
